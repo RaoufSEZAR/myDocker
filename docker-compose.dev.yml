@@ -13,6 +13,7 @@ services:
       - DB_USERNAME=raouf
       - DB_PASSWORD=mongodb13579
       - DB_NAME=mongodb
+      - SESSION_SECRET=secret
     command: npm run dev
 
   mongodb:
