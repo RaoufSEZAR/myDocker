@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { DB_NAME, DB_USERNAME, DB_PASSWORD } = require("./config/config");
 const postRoutes = require("./routes/postRoutes");
+const userRoutes = require("./routes/userRoutes");
 const app = express();
 const port = 3000;
 
@@ -22,4 +23,5 @@ connectWithRetry();
 app.use(express.json());
 
 app.use("/posts", postRoutes);
+app.use("/users", userRoutes);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
