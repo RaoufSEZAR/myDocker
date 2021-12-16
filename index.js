@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const redis = require("redis");
+const cors = require("cors");
 const session = require("express-session");
 const {
 	DB_NAME,
@@ -20,8 +21,6 @@ let redisClient = redis.createClient({
 	port: REDIS_PORT,
 });
 
-const port = 3000;
-
 const connectWithRetry = () => {
 	mongoose
 		.connect(
@@ -35,6 +34,9 @@ const connectWithRetry = () => {
 };
 // connect to db
 connectWithRetry();
+
+app.enable("trust proxy");
+app.use(cors());
 app.use(
 	session({
 		store: new RedisStore({ client: redisClient }),
@@ -51,6 +53,11 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/posts", postRoutes);
-app.use("/users", userRoutes);
+app.get("/api/v1", (req, res) => {
+	res.send("hi");
+});
+app.use("/api/v1/posts", postRoutes);
+app.use("/api/v1/users", userRoutes);
+
+const port = 3000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
